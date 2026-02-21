@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "Official Ruby SDK for Supermemory. Add persistent memory to AI applications " \
                      "with document management, semantic search, user profiling, and integrations " \
                      "with ruby-openai, graph-agent, and langchainrb."
-  spec.homepage = "https://github.com/supermemoryai/ruby-sdk"
+  spec.homepage = "https://github.com/ai-firstly/supermemory"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 

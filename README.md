@@ -5,6 +5,9 @@ Ruby SDK for [Supermemory](https://supermemory.ai) — Memory API for the AI era
 Add persistent memory to AI applications with document management, semantic search, user profiling, and integrations with popular Ruby AI frameworks.
 
 [![Gem Version](https://badge.fury.io/rb/supermemory.svg)](https://rubygems.org/gems/supermemory)
+[![CI](https://github.com/ai-firstly/supermemory/actions/workflows/ci.yml/badge.svg)](https://github.com/ai-firstly/supermemory/actions/workflows/ci.yml)
+[![Ruby](https://img.shields.io/badge/ruby-%3E%3D%203.0-ruby.svg)](https://www.ruby-lang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
 
@@ -492,8 +495,8 @@ results = memory.search(query: "coding preferences", limit: 5)
 ## Development
 
 ```bash
-git clone https://github.com/supermemoryai/ruby-sdk.git
-cd ruby-sdk
+git clone https://github.com/ai-firstly/supermemory.git
+cd supermemory
 bundle install
 bundle exec rspec
 ```
