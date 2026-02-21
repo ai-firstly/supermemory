@@ -62,6 +62,39 @@ RSpec.describe Supermemory::APITimeoutError do
   end
 end
 
+RSpec.describe Supermemory::Error do
+  it "is a subclass of StandardError" do
+    expect(described_class.superclass).to eq(StandardError)
+  end
+end
+
+RSpec.describe Supermemory::APIError do
+  it "is a subclass of Error" do
+    expect(described_class.superclass).to eq(Supermemory::Error)
+  end
+end
+
+RSpec.describe Supermemory::PermissionDeniedError do
+  it "defaults to status 403" do
+    error = described_class.new
+    expect(error.status).to eq(403)
+  end
+end
+
+RSpec.describe Supermemory::ConflictError do
+  it "defaults to status 409" do
+    error = described_class.new
+    expect(error.status).to eq(409)
+  end
+end
+
+RSpec.describe Supermemory::UnprocessableEntityError do
+  it "defaults to status 422" do
+    error = described_class.new
+    expect(error.status).to eq(422)
+  end
+end
+
 RSpec.describe "ERROR_MAP" do
   it "maps status codes to error classes" do
     expect(Supermemory::ERROR_MAP[400]).to eq(Supermemory::BadRequestError)

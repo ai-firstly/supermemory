@@ -1,6 +1,6 @@
 # Supermemory Ruby SDK
 
-Official Ruby SDK for [Supermemory](https://supermemory.ai) — Memory API for the AI era.
+Ruby SDK for [Supermemory](https://supermemory.ai) — Memory API for the AI era.
 
 Add persistent memory to AI applications with document management, semantic search, user profiling, and integrations with popular Ruby AI frameworks.
 

@@ -85,5 +85,82 @@ RSpec.describe Supermemory::Resources::Connections do
       result = connections.resources("conn-1")
       expect(result["total_count"]).to eq(1)
     end
+
+    it "sends pagination params" do
+      stub = stub_request(:get, "https://api.supermemory.ai/v3/connections/conn-1/resources")
+             .with(query: { "page" => "2", "per_page" => "25" })
+             .to_return(status: 200, body: { resources: [], total_count: 50 }.to_json)
+
+      result = connections.resources("conn-1", page: 2, per_page: 25)
+      expect(result["total_count"]).to eq(50)
+      expect(stub).to have_been_requested
+    end
+  end
+
+  describe "#get_by_tag" do
+    it "posts to /v3/connections/:provider/connection" do
+      stub = stub_request(:post, "https://api.supermemory.ai/v3/connections/github/connection")
+             .with(body: hash_including("containerTags" => %w[tag-1 tag-2]))
+             .to_return(status: 200, body: { id: "conn-2", provider: "github" }.to_json)
+
+      result = connections.get_by_tag("github", container_tags: %w[tag-1 tag-2])
+      expect(result["id"]).to eq("conn-2")
+      expect(stub).to have_been_requested
+    end
+  end
+
+  describe "#delete_by_provider" do
+    it "deletes by provider with container_tags" do
+      stub = stub_request(:delete, "https://api.supermemory.ai/v3/connections/github")
+             .with(body: hash_including("containerTags" => %w[tag-1]))
+             .to_return(status: 200, body: { success: true }.to_json)
+
+      result = connections.delete_by_provider("github", container_tags: %w[tag-1])
+      expect(result["success"]).to be true
+      expect(stub).to have_been_requested
+    end
+  end
+
+  describe "#create with all optional params" do
+    it "sends containerTags, documentLimit and metadata" do
+      stub = stub_request(:post, "https://api.supermemory.ai/v3/connections/notion")
+             .with(body: hash_including(
+               "containerTags" => %w[project-a],
+               "documentLimit" => 500,
+               "metadata" => { "team" => "eng" }
+             ))
+             .to_return(status: 200, body: {
+               id: "conn-3", authLink: "https://notion.so/oauth", expiresIn: "10m"
+             }.to_json)
+
+      result = connections.create(
+        "notion",
+        container_tags: %w[project-a],
+        document_limit: 500,
+        metadata: { "team" => "eng" }
+      )
+      expect(result["id"]).to eq("conn-3")
+      expect(stub).to have_been_requested
+    end
+  end
+
+  describe "#import with container_tags" do
+    it "sends containerTags in the body" do
+      stub = stub_request(:post, "https://api.supermemory.ai/v3/connections/google-drive/import")
+             .with(body: hash_including("containerTags" => %w[drive-tag]))
+             .to_return(status: 200, body: "Import started".to_json)
+
+      connections.import("google-drive", container_tags: %w[drive-tag])
+      expect(stub).to have_been_requested
+    end
+  end
+
+  describe "PROVIDERS" do
+    it "contains expected provider values" do
+      expect(Supermemory::Resources::Connections::PROVIDERS).to include(
+        "notion", "google-drive", "onedrive", "gmail", "github", "web-crawler", "s3"
+      )
+      expect(Supermemory::Resources::Connections::PROVIDERS).to be_frozen
+    end
   end
 end

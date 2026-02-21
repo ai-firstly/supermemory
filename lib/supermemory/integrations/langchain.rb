@@ -81,6 +81,8 @@ module Supermemory
           @container_tag = container_tag
         end
 
+        attr_reader :client, :container_tag
+
         def search_memory(query:, limit: 5, search_mode: "hybrid")
           result = @client.search.memories(
             q: query,
